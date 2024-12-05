@@ -7,6 +7,7 @@ import com.victorlicht.day3.MullItOver;
 public class Main {
     public static void main(String[] args) {
         MullItOver mullItOver = new MullItOver();
+        mullItOver.partOne();
         mullItOver.partTwo();
     }
 }

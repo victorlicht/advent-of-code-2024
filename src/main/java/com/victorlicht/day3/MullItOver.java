@@ -11,26 +11,61 @@ public class MullItOver {
         try {
             File file = new File("/home/victorlicht/Desktop/Technical/languages-lab/java/advent-of-code-2024/src/main/java/com/victorlicht/day3/input");
             Scanner reader = new Scanner(file);
-            int totalSum = 0;
+            StringBuffer text = new StringBuffer();
             while (reader.hasNext()) {
-                String text = reader.next();
-                String regex = "mul\\((\\d{1,3}),(\\d{1,3})\\)";
-                Pattern pattern = Pattern.compile(regex);
-                Matcher matcher = pattern.matcher(text);
-                while (matcher.find()) {
-                    int leftNum = Integer.parseInt(matcher.group(1));
-                    int rightNum = Integer.parseInt(matcher.group(2));
-                    totalSum += (leftNum * rightNum);
-                }
+                text.append(reader.next());
             }
-            System.out.println("Total Sum: " + totalSum);
+
+            System.out.println("Total Sum: " + getTheTotalSum(String.valueOf(text)));
             reader.close();
 
         }catch (FileNotFoundException e) {
             throw new RuntimeException("Input file not found", e);
         }
     }
-    public void partTwo() {
 
+    // part result was very different from the code and the code is right I use another solutions of another people but it still wrong but I did it with regex101 with patternSafe Regex Good luck
+    public void partTwo() {
+        try {
+            File file = new File("/home/victorlicht/Desktop/Technical/languages-lab/java/advent-of-code-2024/src/main/java/com/victorlicht/day3/input");
+            Scanner reader = new Scanner(file);
+            StringBuilder safeText = new StringBuilder(); // To accumulate text
+
+            while (reader.hasNextLine()) {
+                String text = reader.nextLine();
+
+                // Regex to match "don't()" to "do()" or lines starting with "don't()"
+                String regexSafe = "|don't\\(\\).*?\\n";
+                Pattern patternSafe = Pattern.compile("don't\\(\\).*?do\\(\\)|don't\\(\\).*", Pattern.DOTALL);
+                safeText.append(String.join("", patternSafe.split(text)));
+
+            }
+
+
+            // Print accumulated safeText
+            System.out.println("Safe Text:\n" + safeText);
+
+            // Print the total sum of mul instructions in safeText
+            System.out.println("Total Sum: " + getTheTotalSum(String.valueOf(safeText)));
+
+            reader.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Input file not found", e);
+        }
+    }
+
+
+    public long getTheTotalSum(String text ){
+        long totalSum = 0;
+        Pattern pattern = Pattern.compile("mul\\((\\d{1,3}),(\\d{1,3})\\)");
+        Matcher matcher = pattern.matcher(text);
+
+        while (matcher.find()) {
+            long leftNum = Long.parseLong(matcher.group(1));
+            long rightNum = Long.parseLong(matcher.group(2));
+            totalSum += (leftNum * rightNum);
+        }
+
+        return totalSum;
     }
 }
